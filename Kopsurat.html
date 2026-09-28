@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Kop Surat Sekolah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #1e3c72;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.4);
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            border-radius: 0 15px 15px 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        /* Logo Upload */
+        .logo-upload {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo-preview {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-preview .placeholder {
+            font-size: 0.7em;
+            color: #999;
+            text-align: center;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(30,60,114,0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(39,174,96,0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(231,76,60,0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .preview-title {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        /* Letter Preview */
+        .letter-paper {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            padding: 15mm 20mm;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+            position: relative;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.6;
+        }
+
+        /* Kop Surat */
+        .kop-surat {
+            border-bottom: 3px double #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .kop-logo {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .kop-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .kop-text {
+            text-align: center;
+            flex: 1;
+        }
+
+        .kop-text .pemerintah {
+            font-size: 11pt;
+            margin-bottom: 2px;
+        }
+
+        .kop-text .instansi {
+            font-size: 10pt;
+            margin-bottom: 2px;
+        }
+
+        .kop-text .nama-sekolah {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .kop-text .alamat {
+            font-size: 10pt;
+            line-height: 1.4;
+        }
+
+        /* Letter Content */
+        .letter-content {
+            margin-top: 15px;
+        }
+
+        .letter-meta {
+            margin-bottom: 20px;
+        }
+
+        .letter-meta table {
+            border: none;
+        }
+
+        .letter-meta td {
+            padding: 3px 0;
+            vertical-align: top;
+            border: none;
+        }
+
+        .letter-meta td:first-child {
+            width: 150px;
+        }
+
+        .letter-subject {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .letter-subject h3 {
+            font-size: 12pt;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .letter-subject .nomor-surat {
+            font-size: 11pt;
+            margin-top: 5px;
+        }
+
+        .letter-body {
+            text-align: justify;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+
+        .letter-body p {
+            margin-bottom: 10px;
+            text-indent: 30px;
+        }
+
+        .letter-body .no-indent {
+            text-indent: 0;
+        }
+
+        /* Signature */
+        .signature-section {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .signature-box {
+            text-align: center;
+            width: 250px;
+        }
+
+        .signature-box .place-date {
+            margin-bottom: 60px;
+        }
+
+        .signature-box .sign-name {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .signature-box .sign-nip {
+            font-size: 10pt;
+        }
+
+        /* Template Cards */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .template-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .template-card:hover {
+            border-color: #2a5298;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .template-card .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .template-card h4 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .template-card p {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .header, .tabs, .form-section, .preview-title, .btn-group, .no-print {
+                display: none !important;
+            }
+
+            .preview-section {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .letter-paper {
+                box-shadow: none;
+                margin: 0;
+                padding: 15mm 20mm;
+                width: 100%;
+                min-height: auto;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .letter-paper {
+                width: 100%;
+                padding: 10mm;
+                font-size: 10pt;
+            }
+
+            .kop-surat {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.85em;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #27ae60;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        /* Saved Letters List */
+        .saved-list {
+            margin-top: 20px;
+        }
+
+        .saved-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .saved-item:hover {
+            background: #f8f9fa;
+        }
+
+        .saved-item-info h4 {
+            color: #1e3c72;
+            margin-bottom: 3px;
+        }
+
+        .saved-item-info p {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .saved-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📄 Generator Kop Surat Sekolah</h1>
+            <p>Buat surat resmi sekolah dengan mudah dan profesional</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('profil')">🏫 Profil Sekolah</button>
+            <button class="tab-btn" onclick="switchTab('surat')">✉️ Buat Surat</button>
+            <button class="tab-btn" onclick="switchTab('template')">📋 Template</button>
+            <button class="tab-btn" onclick="switchTab('riwayat')">📁 Riwayat Surat</button>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <!-- Tab: Profil Sekolah -->
+            <div class="tab-content active" id="tab-profil">
+                <h2 class="section-title">Informasi Sekolah</h2>
+                
+                <div class="logo-upload">
+                    <div class="logo-preview" id="logoPreview">
+                        <span class="placeholder">Logo<br>Sekolah</span>
+                    </div>
+                    <div>
+                        <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(event)">
+                        <p style="font-size:0.85em; color:#666; margin-top:5px;">Upload logo sekolah (PNG/JPG)</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Sekolah</label>
+                        <input type="text" id="namaSekolah" placeholder="Contoh: SMA Negeri 1 Jakarta" value="SMA NEGERI 1 JAKARTA">
+                    </div>
+                    <div class="form-group">
+                        <label>NPSN</label>
+                        <input type="text" id="npsn" placeholder="Nomor Pokok Sekolah Nasional" value="20100001">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jenjang Sekolah</label>
+                        <select id="jenjang">
+                            <option value="SD">SD (Sekolah Dasar)</option>
+                            <option value="SMP">SMP (Sekolah Menengah Pertama)</option>
+                            <option value="SMA" selected>SMA (Sekolah Menengah Atas)</option>
+                            <option value="SMK">SMK (Sekolah Menengah Kejuruan)</option>
+                            <option value="MI">MI (Madrasah Ibtidaiyah)</option>
+                            <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+                            <option value="MA">MA (Madrasah Aliyah)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option value="Negeri">Negeri</option>
+                            <option value="Swasta">Swasta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat Lengkap</label>
+                    <input type="text" id="alamat" placeholder="Jalan, Nomor, Kelurahan, Kecamatan" value="Jl. Budi Utomo No. 7, Kelurahan Menteng, Kecamatan Menteng">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kota/Kabupaten</label>
+                        <input type="text" id="kota" placeholder="Contoh: Jakarta Pusat" value="Jakarta Pusat">
+                    </div>
+                    <div class="form-group">
+                        <label>Provinsi</label>
+                        <input type="text" id="provinsi" placeholder="Contoh: DKI Jakarta" value="DKI Jakarta">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kode Pos</label>
+                        <input type="text" id="kodePos" placeholder="Contoh: 10310" value="10310">
+                    </div>
+                    <div class="form-group">
+                        <label>Telepon</label>
+                        <input type="text" id="telepon" placeholder="Contoh: (021) 3456789" value="(021) 3456789">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="Contoh: info@sekolah.sch.id" value="info@sman1jkt.sch.id">
+                    </div>
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input type="text" id="website" placeholder="Contoh: www.sekolah.sch.id" value="www.sman1jkt.sch.id">
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top:30px;">Informasi Kepala Sekolah</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Kepala Sekolah</label>
+                        <input type="text" id="namaKepsek" placeholder="Nama lengkap beserta gelar" value="Dr. H. Ahmad Sudrajat, M.Pd.">
+                    </div>
+                    <div class="form-group">
+                        <label>NIP Kepala Sekolah</label>
+                        <input type="text" id="nipKepsek" placeholder="Nomor Induk Pegawai" value="196805121990031005">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="saveProfil()">💾 Simpan Profil</button>
+                </div>
+            </div>
+
+            <!-- Tab: Buat Surat -->
+            <div class="tab-content" id="tab-surat">
+                <h2 class="section-title">Detail Surat</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jenis Surat</label>
+                        <select id="jenisSurat" onchange="updateNomorSurat()">
+                            <option value="UND">Surat Undangan</option>
+                            <option value="KET">Surat Keterangan</option>
+                            <option value="SK">Surat Keputusan</option>
+                            <option value="TUG">Surat Tugas</option>
+                            <option value="PEM">Surat Permohonan</option>
+                            <option value="PENG">Surat Pengumuman</option>
+                            <option value="IIN">Surat Izin</option>
+                            <option value="LAIN">Surat Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor Surat</label>
+                        <input type="text" id="nomorSurat" placeholder="Contoh: 421/001/SMA1/2026" value="421/001/SMA1/2026">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tanggal Surat</label>
+                        <input type="date" id="tanggalSurat" value="2026-09-28">
+                    </div>
+                    <div class="form-group">
+                        <label>Perihal / Subjek</label>
+                        <input type="text" id="perihal" placeholder="Contoh: Undangan Rapat Wali Murid" value="Undangan Rapat Wali Murid">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ditujukan Kepada</label>
+                    <input type="text" id="ditujukan" placeholder="Contoh: Bapak/Ibu Wali Murid Kelas XII" value="Bapak/Ibu Wali Murid Kelas XII">
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat Penerima</label>
+                    <input type="text" id="alamatPenerima" placeholder="Contoh: di Tempat" value="di Tempat">
+                </div>
+
+                <div class="form-group">
+                    <label>Isi Surat (Pembuka)</label>
+                    <textarea id="isiPembuka" placeholder="Tulis pembuka surat...">Dengan hormat,
+
+Sehubungan dengan akan dilaksanakannya kegiatan pertemuan orang tua/wali murid dengan pihak sekolah, maka dengan ini kami mengundang Bapak/Ibu untuk hadir pada:</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Detail Kegiatan (opsional - akan ditampilkan sebagai tabel)</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hari/Tanggal</label>
+                            <input type="text" id="detailHari" placeholder="Contoh: Sabtu, 5 Oktober 2026" value="Sabtu, 5 Oktober 2026">
+                        </div>
+                        <div class="form-group">
+                            <label>Waktu</label>
+                            <input type="text" id="detailWaktu" placeholder="Contoh: 08.00 - 12.00 WIB" value="08.00 - 12.00 WIB">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tempat</label>
+                            <input type="text" id="detailTempat" placeholder="Contoh: Aula SMA Negeri 1 Jakarta" value="Aula SMA Negeri 1 Jakarta">
+                        </div>
+                        <div class="form-group">
+                            <label>Agenda</label>
+                            <input type="text" id="detailAgenda" placeholder="Contoh: Pembahasan Persiapan Ujian" value="Pembahasan Persiapan Ujian Akhir Semester">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Isi Surat (Penutup)</label>
+                    <textarea id="isiPenutup" placeholder="Tulis penutup surat...">Demikian surat undangan ini kami sampaikan. Atas perhatian dan kehadiran Bapak/Ibu, kami ucapkan terima kasih.</textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tempat Tanda Tangan</label>
+                        <input type="text" id="tempatTTD" placeholder="Contoh: Jakarta" value="Jakarta">
+                    </div>
+                    <div class="form-group">
+                        <label>Jabatan Penanda Tangan</label>
+                        <input type="text" id="jabatanTTD" placeholder="Contoh: Kepala Sekolah" value="Kepala Sekolah">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="generateSurat()">👁️ Preview Surat</button>
+                    <button class="btn btn-success" onclick="saveSurat()">💾 Simpan Surat</button>
+                    <button class="btn btn-danger" onclick="resetForm()">🔄 Reset Form</button>
+                </div>
+            </div>
+
+            <!-- Tab: Template -->
+            <div class="tab-content" id="tab-template">
+                <h2 class="section-title">Pilih Template Surat</h2>
+                <p style="color:#666; margin-bottom:15px;">Klik salah satu template untuk mengisi form secara otomatis</p>
+                
+                <div class="template-grid">
+                    <div class="template-card" onclick="loadTemplate('undangan')">
+                        <div class="icon">📨</div>
+                        <h4>Surat Undangan</h4>
+                        <p>Undangan rapat, acara, atau kegiatan sekolah</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('keterangan')">
+                        <div class="icon">📃</div>
+                        <h4>Surat Keterangan</h4>
+                        <p>Surat keterangan siswa, aktif, tidak mampu, dll</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('tugas')">
+                        <div class="icon">📋</div>
+                        <h4>Surat Tugas</h4>
+                        <p>Penugasan guru/pegawai untuk kegiatan tertentu</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('izin')">
+                        <div class="icon">📝</div>
+                        <h4>Surat Izin</h4>
+                        <p>Surat izin kegiatan, penggunaan fasilitas, dll</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('pengumuman')">
+                        <div class="icon">📢</div>
+                        <h4>Surat Pengumuman</h4>
+                        <p>Pengumuman resmi dari sekolah</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('permohonan')">
+                        <div class="icon">📬</div>
+                        <h4>Surat Permohonan</h4>
+                        <p>Permohonan bantuan, kerjasama, atau fasilitas</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Riwayat -->
+            <div class="tab-content" id="tab-riwayat">
+                <h2 class="section-title">Riwayat Surat Tersimpan</h2>
+                <div class="saved-list" id="savedList">
+                    <p style="color:#999; text-align:center; padding:40px;">Belum ada surat yang tersimpan</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section" id="previewSection" style="display:none;">
+            <h2 class="preview-title no-print">📄 Preview Surat</h2>
+            <div class="btn-group no-print" style="margin-bottom:20px;">
+                <button class="btn btn-primary" onclick="printSurat()">🖨️ Cetak Surat</button>
+                <button class="btn btn-success" onclick="downloadPDF()">📥 Download PDF</button>
+            </div>
+            <div id="letterPreview"></div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // ==================== DATA ====================
+        let profilSekolah = {
+            nama: 'SMA NEGERI 1 JAKARTA',
+            npsn: '20100001',
+            jenjang: 'SMA',
+            status: 'Negeri',
+            alamat: 'Jl. Budi Utomo No. 7, Kelurahan Menteng, Kecamatan Menteng',
+            kota: 'Jakarta Pusat',
+            provinsi: 'DKI Jakarta',
+            kodePos: '10310',
+            telepon: '(021) 3456789',
+            email: 'info@sman1jkt.sch.id',
+            website: 'www.sman1jkt.sch.id',
+            namaKepsek: 'Dr. H. Ahmad Sudrajat, M.Pd.',
+            nipKepsek: '196805121990031005',
+            logo: ''
+        };
+
+        let savedLetters = JSON.parse(localStorage.getItem('savedLetters')) || [];
+
+        // ==================== TAB NAVIGATION ====================
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'riwayat') {
+                renderSavedList();
+            }
+        }
+
+        // ==================== LOGO HANDLING ====================
+        function handleLogo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilSekolah.logo = e.target.result;
+                    document.getElementById('logoPreview').innerHTML = `<img src="${e.target.result}" alt="Logo">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ==================== SAVE PROFIL ====================
+        function saveProfil() {
+            profilSekolah.nama = document.getElementById('namaSekolah').value;
+            profilSekolah.npsn = document.getElementById('npsn').value;
+            profilSekolah.jenjang = document.getElementById('jenjang').value;
+            profilSekolah.status = document.getElementById('status').value;
+            profilSekolah.alamat = document.getElementById('alamat').value;
+            profilSekolah.kota = document.getElementById('kota').value;
+            profilSekolah.provinsi = document.getElementById('provinsi').value;
+            profilSekolah.kodePos = document.getElementById('kodePos').value;
+            profilSekolah.telepon = document.getElementById('telepon').value;
+            profilSekolah.email = document.getElementById('email').value;
+            profilSekolah.website = document.getElementById('website').value;
+            profilSekolah.namaKepsek = document.getElementById('namaKepsek').value;
+            profilSekolah.nipKepsek = document.getElementById('nipKepsek').value;
+
+            localStorage.setItem('profilSekolah', JSON.stringify(profilSekolah));
+            showNotification('✅ Profil sekolah berhasil disimpan!');
+        }
+
+        // ==================== GENERATE SURAT ====================
+        function generateSurat() {
+            const jenis = document.getElementById('jenisSurat').value;
+            const nomor = document.getElementById('nomorSurat').value;
+            const tanggal = document.getElementById('tanggalSurat').value;
+            const perihal = document.getElementById('perihal').value;
+            const ditujukan = document.getElementById('ditujukan').value;
+            const alamatPenerima = document.getElementById('alamatPenerima').value;
+            const pembuka = document.getElementById('isiPembuka').value;
+            const penutup = document.getElementById('isiPenutup').value;
+            const tempat = document.getElementById('tempatTTD').value;
+            const jabatan = document.getElementById('jabatanTTD').value;
+            
+            const detailHari = document.getElementById('detailHari').value;
+            const detailWaktu = document.getElementById('detailWaktu').value;
+            const detailTempat = document.getElementById('detailTempat').value;
+            const detailAgenda = document.getElementById('detailAgenda').value;
+
+            // Format tanggal
+            const tanggalFormatted = formatTanggal(tanggal);
+
+            // Build letter HTML
+            let letterHTML = `
+                <div class="letter-paper" id="letterPaper">
+                    <!-- KOP SURAT -->
+                    <div class="kop-surat">
+                        <div class="kop-logo">
+                            ${profilSekolah.logo ? `<img src="${profilSekolah.logo}" alt="Logo">` : ''}
+                        </div>
+                        <div class="kop-text">
+                            <div class="pemerintah">PEMERINTAH ${profilSekolah.provinsi.toUpperCase()}</div>
+                            <div class="instansi">DINAS PENDIDIKAN ${profilSekolah.kota.toUpperCase()}</div>
+                            <div class="nama-sekolah">${profilSekolah.nama}</div>
+                            <div class="alamat">
+                                ${profilSekolah.alamat}, ${profilSekolah.kota} ${profilSekolah.kodePos}<br>
+                                Telepon: ${profilSekolah.telepon} | Email: ${profilSekolah.email}<br>
+                                Website: ${profilSekolah.website} | NPSN: ${profilSekolah.npsn}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ISI SURAT -->
+                    <div class="letter-content">
+                        <div class="letter-meta">
+                            <table>
+                                <tr>
+                                    <td>Nomor</td>
+                                    <td>: ${nomor}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lampiran</td>
+                                    <td>: -</td>
+                                </tr>
+                                <tr>
+                                    <td>Perihal</td>
+                                    <td>: <strong>${perihal}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal</td>
+                                    <td>: ${tanggalFormatted}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="margin-bottom:15px;">
+                            <strong>Kepada Yth.</strong><br>
+                            ${ditujukan}<br>
+                            ${alamatPenerima}
+                        </div>
+
+                        <div class="letter-body">
+                            ${formatIsiSurat(pembuka)}
+                            
+                            ${detailHari ? `
+                            <div style="margin: 15px 0 15px 30px;">
+                                <table style="border:none;">
+                                    <tr>
+                                        <td style="padding:3px 15px 3px 0; border:none; width:120px;">Hari/Tanggal</td>
+                                        <td style="padding:3px 0; border:none;">: ${detailHari}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:3px 15px 3px 0; border:none;">Waktu</td>
+                                        <td style="padding:3px 0; border:none;">: ${detailWaktu}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:3px 15px 3px 0; border:none;">Tempat</td>
+                                        <td style="padding:3px 0; border:none;">: ${detailTempat}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:3px 15px 3px 0; border:none;">Agenda</td>
+                                        <td style="padding:3px 0; border:none;">: ${detailAgenda}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            ` : ''}
+                            
+                            ${formatIsiSurat(penutup)}
+                        </div>
+
+                        <div class="signature-section">
+                            <div class="signature-box">
+                                <div class="place-date">${tempat}, ${tanggalFormatted}</div>
+                                <div>${jabatan}</div>
+                                <br><br><br>
+                                <div class="sign-name">${profilSekolah.namaKepsek}</div>
+                                <div class="sign-nip">NIP. ${profilSekolah.nipKepsek}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('letterPreview').innerHTML = letterHTML;
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
+        function formatTanggal(dateStr) {
+            if (!dateStr) return '-';
+            const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const date = new Date(dateStr);
+            return `${date.getDate()} ${bulan[date.getMonth()]} ${date.getFullYear()}`;
+        }
+
+        function formatIsiSurat(text) {
+            if (!text) return '';
+            const paragraphs = text.split('\n').filter(p => p.trim());
+            return paragraphs.map(p => `<p>${p}</p>`).join('');
+        }
+
+        function updateNomorSurat() {
+            const jenis = document.getElementById('jenisSurat').value;
+            const kodeMap = {
+                'UND': '421',
+                'KET': '420',
+                'SK': '800',
+                'TUG': '422',
+                'PEM': '423',
+                'PENG': '424',
+                'IIN': '425',
+                'LAIN': '400'
+            };
+            const kode = kodeMap[jenis] || '400';
+            const tahun = new Date().getFullYear();
+            document.getElementById('nomorSurat').value = `${kode}/___/SMA1/${tahun}`;
+        }
+
+        // ==================== SAVE & LOAD LETTERS ====================
+        function saveSurat() {
+            const surat = {
+                id: Date.now(),
+                jenis: document.getElementById('jenisSurat').value,
+                nomor: document.getElementById('nomorSurat').value,
+                tanggal: document.getElementById('tanggalSurat').value,
+                perihal: document.getElementById('perihal').value,
+                ditujukan: document.getElementById('ditujukan').value,
+                createdAt: new Date().toLocaleString('id-ID'),
+                formData: {
+                    jenisSurat: document.getElementById('jenisSurat').value,
+                    nomorSurat: document.getElementById('nomorSurat').value,
+                    tanggalSurat: document.getElementById('tanggalSurat').value,
+                    perihal: document.getElementById('perihal').value,
+                    ditujukan: document.getElementById('ditujukan').value,
+                    alamatPenerima: document.getElementById('alamatPenerima').value,
+                    isiPembuka: document.getElementById('isiPembuka').value,
+                    isiPenutup: document.getElementById('isiPenutup').value,
+                    tempatTTD: document.getElementById('tempatTTD').value,
+                    jabatanTTD: document.getElementById('jabatanTTD').value,
+                    detailHari: document.getElementById('detailHari').value,
+                    detailWaktu: document.getElementById('detailWaktu').value,
+                    detailTempat: document.getElementById('detailTempat').value,
+                    detailAgenda: document.getElementById('detailAgenda').value
+                }
+            };
+
+            savedLetters.unshift(surat);
+            localStorage.setItem('savedLetters', JSON.stringify(savedLetters));
+            showNotification('✅ Surat berhasil disimpan!');
+        }
+
+        function loadSavedSurat(id) {
+            const surat = savedLetters.find(s => s.id === id);
+            if (!surat) return;
+
+            const f = surat.formData;
+            document.getElementById('jenisSurat').value = f.jenisSurat;
+            document.getElementById('nomorSurat').value = f.nomorSurat;
+            document.getElementById('tanggalSurat').value = f.tanggalSurat;
+            document.getElementById('perihal').value = f.perihal;
+            document.getElementById('ditujukan').value = f.ditujukan;
+            document.getElementById('alamatPenerima').value = f.alamatPenerima;
+            document.getElementById('isiPembuka').value = f.isiPembuka;
+            document.getElementById('isiPenutup').value = f.isiPenutup;
+            document.getElementById('tempatTTD').value = f.tempatTTD;
+            document.getElementById('jabatanTTD').value = f.jabatanTTD;
+            document.getElementById('detailHari').value = f.detailHari;
+            document.getElementById('detailWaktu').value = f.detailWaktu;
+            document.getElementById('detailTempat').value = f.detailTempat;
+            document.getElementById('detailAgenda').value = f.detailAgenda;
+
+            // Switch to surat tab
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-surat').classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+
+            generateSurat();
+            showNotification('📄 Surat berhasil dimuat!');
+        }
+
+        function deleteSavedSurat(id) {
+            if (confirm('Yakin ingin menghapus surat ini?')) {
+                savedLetters = savedLetters.filter(s => s.id !== id);
+                localStorage.setItem('savedLetters', JSON.stringify(savedLetters));
+                renderSavedList();
+                showNotification('🗑️ Surat berhasil dihapus!');
+            }
+        }
+
+        function renderSavedList() {
+            const list = document.getElementById('savedList');
+            if (savedLetters.length === 0) {
+                list.innerHTML = '<p style="color:#999; text-align:center; padding:40px;">Belum ada surat yang tersimpan</p>';
+                return;
+            }
+
+            const jenisNames = {
+                'UND': 'Surat Undangan',
+                'KET': 'Surat Keterangan',
+                'SK': 'Surat Keputusan',
+                'TUG': 'Surat Tugas',
+                'PEM': 'Surat Permohonan',
+                'PENG': 'Surat Pengumuman',
+                'IIN': 'Surat Izin',
+                'LAIN': 'Surat Lainnya'
+            };
+
+            list.innerHTML = savedLetters.map(s => `
+                <div class="saved-item">
+                    <div class="saved-item-info">
+                        <h4>${s.perihal || 'Tanpa Perihal'}</h4>
+                        <p>${jenisNames[s.jenis] || s.jenis} | No: ${s.nomor} | ${s.createdAt}</p>
+                    </div>
+                    <div class="saved-item-actions">
+                        <button class="btn btn-primary btn-sm" onclick="loadSavedSurat(${s.id})">📂 Buka</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteSavedSurat(${s.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ==================== TEMPLATES ====================
+        function loadTemplate(type) {
+            const templates = {
+                undangan: {
+                    jenisSurat: 'UND',
+                    perihal: 'Undangan Rapat',
+                    isiPembuka: 'Dengan hormat,\n\nSehubungan dengan akan dilaksanakannya kegiatan rapat koordinasi, maka dengan ini kami mengundang Bapak/Ibu untuk hadir pada:',
+                    isiPenutup: 'Demikian surat undangan ini kami sampaikan. Atas perhatian dan kehadiran Bapak/Ibu, kami ucapkan terima kasih.',
+                    detailHari: 'Senin, 6 Oktober 2026',
+                    detailWaktu: '09.00 - 11.00 WIB',
+                    detailTempat: 'Ruang Rapat Sekolah',
+                    detailAgenda: 'Rapat Koordinasi Persiapan Ujian Akhir Semester'
+                },
+                keterangan: {
+                    jenisSurat: 'KET',
+                    perihal: 'Surat Keterangan Aktif Siswa',
+                    isiPembuka: 'Yang bertanda tangan di bawah ini Kepala Sekolah SMA Negeri 1 Jakarta, menerangkan bahwa:',
+                    isiPenutup: 'Demikian surat keterangan ini dibuat dengan sesungguhnya untuk dapat dipergunakan sebagaimana mestinya.',
+                    detailHari: '',
+                    detailWaktu: '',
+                    detailTempat: '',
+                    detailAgenda: ''
+                },
+                tugas: {
+                    jenisSurat: 'TUG',
+                    perihal: 'Surat Tugas',
+                    isiPembuka: 'Yang bertanda tangan di bawah ini Kepala Sekolah SMA Negeri 1 Jakarta, menugaskan kepada:',
+                    isiPenutup: 'Demikian surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.',
+                    detailHari: 'Senin s.d. Rabu, 6-8 Oktober 2026',
+                    detailWaktu: 'Sejam diperlukan',
+                    detailTempat: 'Gedung Dinas Pendidikan Provinsi',
+                    detailAgenda: 'Mengikuti Workshop Kurikulum Merdeka'
+                },
+                izin: {
+                    jenisSurat: 'IIN',
+                    perihal: 'Permohonan Izin Kegiatan',
+                    isiPembuka: 'Dengan hormat,\n\nSehubungan dengan program kerja OSIS SMA Negeri 1 Jakarta, kami bermaksud menyelenggarakan kegiatan. Untuk itu kami memohon izin kepada Bapak/Ibu agar kegiatan tersebut dapat dilaksanakan.',
+                    isiPenutup: 'Demikian permohonan izin ini kami sampaikan. Atas perhatian dan izin yang diberikan, kami ucapkan terima kasih.',
+                    detailHari: 'Sabtu, 11 Oktober 2026',
+                    detailWaktu: '07.00 - 15.00 WIB',
+                    detailTempat: 'Lapangan Sekolah',
+                    detailAgenda: 'Pentas Seni dan Budaya'
+                },
+                pengumuman: {
+                    jenisSurat: 'PENG',
+                    perihal: 'Pengumuman Libur Sekolah',
+                    isiPembuka: 'Dengan ini diberitahukan kepada seluruh siswa, guru, dan tenaga kependidikan SMA Negeri 1 Jakarta bahwa:',
+                    isiPenutup: 'Demikian pengumuman ini disampaikan untuk menjadi maklum. Terima kasih atas perhatian semua pihak.',
+                    detailHari: 'Senin s.d. Jumat, 6-10 Oktober 2026',
+                    detailWaktu: 'Selama hari libur',
+                    detailTempat: 'Lingkungan Sekolah',
+                    detailAgenda: 'Libur Tengah Semester Ganjil T.A. 2026/2027'
+                },
+                permohonan: {
+                    jenisSurat: 'PEM',
+                    perihal: 'Permohonan Bantuan',
+                    isiPembuka: 'Dengan hormat,\n\nSehubungan dengan upaya peningkatan kualitas pembelajaran di sekolah kami, dengan ini kami mengajukan permohonan bantuan berupa:',
+                    isiPenutup: 'Demikian surat permohonan ini kami sampaikan. Besar harapan kami agar permohonan ini dapat dikabulkan. Atas perhatian Bapak/Ibu, kami ucapkan terima kasih.',
+                    detailHari: '',
+                    detailWaktu: '',
+                    detailTempat: '',
+                    detailAgenda: ''
+                }
+            };
+
+            const t = templates[type];
+            if (!t) return;
+
+            document.getElementById('jenisSurat').value = t.jenisSurat;
+            document.getElementById('perihal').value = t.perihal;
+            document.getElementById('isiPembuka').value = t.isiPembuka;
+            document.getElementById('isiPenutup').value = t.isiPenutup;
+            document.getElementById('detailHari').value = t.detailHari;
+            document.getElementById('detailWaktu').value = t.detailWaktu;
+            document.getElementById('detailTempat').value = t.detailTempat;
+            document.getElementById('detailAgenda').value = t.detailAgenda;
+            updateNomorSurat();
+
+            // Switch to surat tab
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-surat').classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+
+            showNotification('📋 Template berhasil dimuat!');
+        }
+
+        // ==================== PRINT & DOWNLOAD ====================
+        function printSurat() {
+            window.print();
+        }
+
+        function downloadPDF() {
+            showNotification('💡 Gunakan Ctrl+P lalu pilih "Save as PDF" untuk menyimpan sebagai PDF');
+            setTimeout(() => window.print(), 1000);
+        }
+
+        // ==================== RESET ====================
+        function resetForm() {
+            if (confirm('Yakin ingin mereset semua field?')) {
+                document.getElementById('jenisSurat').value = 'UND';
+                document.getElementById('nomorSurat').value = '';
+                document.getElementById('perihal').value = '';
+                document.getElementById('ditujukan').value = '';
+                document.getElementById('alamatPenerima').value = '';
+                document.getElementById('isiPembuka').value = '';
+                document.getElementById('isiPenutup').value = '';
+                document.getElementById('detailHari').value = '';
+                document.getElementById('detailWaktu').value = '';
+                document.getElementById('detailTempat').value = '';
+                document.getElementById('detailAgenda').value = '';
+                updateNomorSurat();
+                showNotification('🔄 Form berhasil direset!');
+            }
+        }
+
+        // ==================== NOTIFICATION ====================
+        function showNotification(message, isError = false) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.className = 'notification show' + (isError ? ' error' : '');
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        // ==================== INIT ====================
+        function init() {
+            // Load saved profil
+            const savedProfil = localStorage.getItem('profilSekolah');
+            if (savedProfil) {
+                profilSekolah = JSON.parse(savedProfil);
+                document.getElementById('namaSekolah').value = profilSekolah.nama;
+                document.getElementById('npsn').value = profilSekolah.npsn;
+                document.getElementById('jenjang').value = profilSekolah.jenjang;
+                document.getElementById('status').value = profilSekolah.status;
+                document.getElementById('alamat').value = profilSekolah.alamat;
+                document.getElementById('kota').value = profilSekolah.kota;
+                document.getElementById('provinsi').value = profilSekolah.provinsi;
+                document.getElementById('kodePos').value = profilSekolah.kodePos;
+                document.getElementById('telepon').value = profilSekolah.telepon;
+                document.getElementById('email').value = profilSekolah.email;
+                document.getElementById('website').value = profilSekolah.website;
+                document.getElementById('namaKepsek').value = profilSekolah.namaKepsek;
+                document.getElementById('nipKepsek').value = profilSekolah.nipKepsek;
+                
+                if (profilSekolah.logo) {
+                    document.getElementById('logoPreview').innerHTML = `<img src="${profilSekolah.logo}" alt="Logo">`;
+                }
+            }
+
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggalSurat').value = today;
+
+            // Update nomor surat
+            updateNomorSurat();
+
+            // Render saved list
+            renderSavedList();
+        }
+
+        // Run init
+        init();
+    </script>
+</body>
+</html>
